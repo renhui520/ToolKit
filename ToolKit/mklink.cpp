@@ -1,37 +1,35 @@
-#include "mklink.h"
+ï»¿#include "mklink.h"
+
+#include <filesystem>
+#include <cstdio>
 
 /*
 
-
-TODO: 1. ÎÄ¼ş¸´ÖÆµ½ĞÂÎ»ÖÃ£¬²¢É¾³ı¾ÉÎÄ¼ş£¬È»ºó´´½¨Á¬½Ó
-	  2. ÃÀ»¯½çÃæ£¬Ôö¼ÓÌáÊ¾ĞÅÏ¢
-
+TODO: 1. æ–‡ä»¶å¤åˆ¶åˆ°æ–°ä½ç½®ï¼Œå¹¶åˆ é™¤æ—§æ–‡ä»¶ï¼Œç„¶ååˆ›å»ºè¿æ¥	O
+      2. ç¾åŒ–ç•Œé¢ï¼Œå¢åŠ æç¤ºä¿¡æ¯	âœ”
 
 */
-
-
-
 
 sub_mklink::sub_mklink()
 {
 	printf("====================================\n");
-	printf("mklink×ÓÄ£¿éÒÑÆô¶¯\n");
+	printf("mklinkå­æ¨¡å—å·²å¯åŠ¨\n");
 	printf("====================================\n\n");
-	printf("Tips: mklink×ÓÄ£¿é ÔİÇÒ²»Ö§³ÖÖĞÎÄÂ·¾¶£¬ËùÒÔÇëÎğÌí¼ÓÈÎºÎÖĞÎÄÂ·¾¶£¬¿ÉÄÜ»áµ¼ÖÂ±¨´í\n");
-	printf("ÖĞÎÄ¿ÉÒÔÖ±½ÓÓÃÓÚ×¢ÊÍ£¬µ«²»¿É×öÂ·¾¶\n\n");
+	printf("Tips: mklinkå­æ¨¡å— æš‚ä¸”ä¸æ”¯æŒä¸­æ–‡è·¯å¾„ï¼Œæ‰€ä»¥è¯·å‹¿æ·»åŠ ä»»ä½•ä¸­æ–‡è·¯å¾„ï¼Œå¯èƒ½ä¼šå¯¼è‡´æŠ¥é”™\n");
+	printf("ä¸­æ–‡å¯ä»¥ç›´æ¥ç”¨äºæ³¨é‡Šï¼Œä½†ä¸å¯åšè·¯å¾„\n\n");
 }
 sub_mklink::~sub_mklink()
 {
 	printf("\n====================================\n");
-	printf("mklink×ÓÄ£¿éÒÑ¹Ø±Õ\n");
+	printf("mklinkå­æ¨¡å—å·²å…³é—­\n");
 	printf("====================================\n");
 }
 
 sub_mklink::config& sub_mklink::read_config()
 {
 
-	//TODO: ¶ÁÈ¡ºÍ·µ»ØÅäÖÃÎÄ¼şÄÚÈİ
-	// 1. ¶ÁÈ¡ÅäÖÃÎÄ¼ş
+	//TODO: è¯»å–å’Œè¿”å›é…ç½®æ–‡ä»¶å†…å®¹
+	// 1. è¯»å–é…ç½®æ–‡ä»¶
 	std::vector<std::string> buffer_rconfig_un;
 	std::string buffer_rconfig_source;
 	std::string buffer_rconfig_target;
@@ -40,10 +38,10 @@ sub_mklink::config& sub_mklink::read_config()
 	{
 		cfg.success = false;
 
-		std::cout << "\nconfigÅäÖÃÎÄ¼ş ¸ñÊ½ÈçÏÂ£º" << std::endl;
-		std::cout << "ÎÄ¼şÃû: config.cfg" << std::endl;
-		std::cout << "¸ñÊ½ÈçÏÂ: Â·¾¶ÖĞÇëÎğ°üº¬ÈÎºÎÖĞÎÄ, ·ñÔòÎŞ·¨Ê¶±ğ, ÔÊĞí´æÔÚ¶àĞĞ¸ô¿ª \n \
-Èç¹ûÃ»ÓĞÂ·¾¶, ÇëÎğĞ´Â·¾¶Í·¼´sourceºÍtarget, ·ñÔò»á±¨´í!! \n\n \
+		std::cout << "\nconfigé…ç½®æ–‡ä»¶ æ ¼å¼å¦‚ä¸‹ï¼š" << std::endl;
+		std::cout << "æ–‡ä»¶å: config.cfg" << std::endl;
+		std::cout << "æ ¼å¼å¦‚ä¸‹: è·¯å¾„ä¸­è¯·å‹¿åŒ…å«ä»»ä½•ä¸­æ–‡, å¦åˆ™æ— æ³•è¯†åˆ«, å…è®¸å­˜åœ¨å¤šè¡Œéš”å¼€ \n \
+å¦‚æœæ²¡æœ‰è·¯å¾„, è¯·å‹¿å†™è·¯å¾„å¤´å³sourceå’Œtarget, å¦åˆ™ä¼šæŠ¥é”™!! \n\n \
 source: C:\\b_test \n \
 source: C:\\d_test \n \
 \n \
@@ -56,67 +54,119 @@ target: D:\\c_test \n \
 		return cfg;
 	}
 
-	// 2. ÌáÁ¶config_bufferµÄÅäÖÃÎÄ¼şÄÚÈİ
+	// 2. æç‚¼config_bufferçš„é…ç½®æ–‡ä»¶å†…å®¹
 	for (auto& line : buffer_rconfig_un)
 	{
 		if (line.find("source:") != std::string::npos)
 		{
 			buffer_rconfig_source = line.substr(line.find(":") + 2);
-			cfg.source_path.push_back(buffer_rconfig_source);	// ½«Ô´Â·¾¶Ìí¼Óµ½config½á¹¹ÌåÖĞ
+			cfg.source_path.push_back(buffer_rconfig_source);	// å°†æºè·¯å¾„æ·»åŠ åˆ°configç»“æ„ä½“ä¸­
 		}
 		if (line.find("target:") != std::string::npos)
 		{
 			buffer_rconfig_target = line.substr(line.find(":") + 2);
-			cfg.target_path.push_back(buffer_rconfig_target);	// ½«Ä¿±êÂ·¾¶Ìí¼Óµ½config½á¹¹ÌåÖĞ
+			cfg.target_path.push_back(buffer_rconfig_target);	// å°†ç›®æ ‡è·¯å¾„æ·»åŠ åˆ°configç»“æ„ä½“ä¸­
 		}
 	}
 
-	// 3. ¼ì²âsourceºÍtargetÊıÄ¿ÊÇ·ñÏàµÈ
+	// 3. æ£€æµ‹sourceå’Œtargetæ•°ç›®æ˜¯å¦ç›¸ç­‰
 	if (cfg.source_path.size() != cfg.target_path.size())
 	{
-		std::cout << "Ô´Â·¾¶ºÍÄ¿±êÂ·¾¶ÊıÄ¿²»ÏàµÈ£¬Çë¼ì²éÅäÖÃÎÄ¼ş" << std::endl;
+		std::cout << "æºè·¯å¾„å’Œç›®æ ‡è·¯å¾„æ•°ç›®ä¸ç›¸ç­‰ï¼Œè¯·æ£€æŸ¥é…ç½®æ–‡ä»¶" << std::endl;
 		cfg.success = false;
 	}
 
-	// 4. ·µ»Øconfig½á¹¹Ìå
+	// 4. è¿”å›configç»“æ„ä½“
 	return cfg;
 }
 
+// å¤åˆ¶æ–‡ä»¶åˆ°æ–°ä½ç½®ï¼Œå¹¶åˆ é™¤æ—§æ–‡ä»¶ï¼Œç„¶ååˆ›å»ºè¿æ¥
+bool copy_and_delete(const std::string& source, const std::string& target) {
+    try {
+        // æ£€æŸ¥æºè·¯å¾„æ˜¯å¦å­˜åœ¨
+        if (!std::filesystem::exists(source)) {
+            std::cerr << "æºè·¯å¾„ä¸å­˜åœ¨: " << source << std::endl;
+            return false;
+        }
 
-int mklink_start()
-{
-	/*
-	C:\Users\renhui>mklink /j "C:\Users\renhui\Desktop\a_test" "H:\b_test"
-	Îª C:\Users\renhui\Desktop\a_test <<===>> H:\b_test ´´½¨µÄÁª½Ó
-	*/
+        // è·å–ç›®æ ‡çˆ¶ç›®å½•
+        const auto target_path = std::filesystem::path(target);
+        const auto parent_dir = target_path.parent_path();
 
-	/*int result = system("mklink /j \"C:\\Users\\renhui\\Desktop\\a_test\" \"H:\\b_test\"");
-	if (result == 0) {
-		std::cout << "Junction created successfully." << std::endl;
-	}
-	else {
-		std::cout << "Failed to create junction. Error code: " << result << std::endl;
-	}*/
-	//system("mklink /j \"C:\\Users\\renhui\\Desktop\\a_test\" \"H:\\b_test\"");
+        // åˆ›å»ºçˆ¶ç›®å½•ï¼ˆè‡ªåŠ¨å¤„ç†è·¯å¾„å­˜åœ¨æ€§ï¼‰
+        std::filesystem::create_directories(parent_dir); // å¯èƒ½æŠ›å‡ºå¼‚å¸¸
 
-	sub_mklink mklink;
-	sub_mklink::config cfg = mklink.read_config();
-	if (!cfg.success)
-	{
-		return -1;
-	}
+        // æ£€æŸ¥ç›®æ ‡è·¯å¾„æ˜¯å¦å†²çªï¼ˆå¦‚æœæ˜¯ç›®å½•ï¼‰
+        if (std::filesystem::exists(target) && std::filesystem::is_directory(target)) {
+            std::cerr << "é”™è¯¯: ç›®æ ‡å·²å­˜åœ¨ï¼Œæ— æ³•ç»§ç»­ï¼Œè¯·åˆ é™¤ç›®æ ‡æˆ–æ›´æ”¹ç›®æ ‡" << target << std::endl;
+            return false;
+        }
 
-	for (int i = 0; i < cfg.source_path.size(); ++i)
-	{
-		//std::cout << cfg.source_path.size();
-		std::cout << "================================" << std::endl;
-		std::cout << "Ô´Â·¾¶: " << cfg.source_path[i] << std::endl;
-		std::cout << "Ä¿±êÂ·¾¶: " << cfg.target_path[i] << std::endl;
-		std::string command = "mklink /j \"" + cfg.target_path[i] + "\" \"" + cfg.source_path[i] + "\"";
-		system(command.c_str());
-	}
-	std::cout << "================================" << std::endl;
+        // å¤åˆ¶æ–‡ä»¶/ç›®å½•ï¼ˆæ”¯æŒé€’å½’ï¼‰
+        std::filesystem::copy(source, target, 
+            std::filesystem::copy_options::overwrite_existing | 
+            std::filesystem::copy_options::recursive); // å¯èƒ½æŠ›å‡ºå¼‚å¸¸
 
-	return 0;
+        // åˆ é™¤æºæ–‡ä»¶/ç›®å½•
+        std::filesystem::remove_all(source); // å¯èƒ½æŠ›å‡ºå¼‚å¸¸
 
+        return true;
+    } catch (const std::filesystem::filesystem_error& e) {
+        // ç»†åŒ–é”™è¯¯ç±»å‹æç¤º
+        if (e.code() == std::errc::permission_denied) {
+            std::cerr << "æƒé™ä¸è¶³: " << e.path1() << std::endl;
+        } else {
+            std::cerr << "æ–‡ä»¶æ“ä½œå¤±è´¥: " << e.what() << std::endl;
+        }
+        return false;
+    }
 }
+
+int mklink_start() {
+    sub_mklink mklink;
+    sub_mklink::config cfg = mklink.read_config();
+    if (!cfg.success) {
+        return -1;
+    }
+
+    for (int i = 0; i < cfg.source_path.size(); ++i) {
+        std::cout << "================================" << std::endl;
+        std::cout << "æºè·¯å¾„: " << cfg.source_path[i] << std::endl;
+        std::cout << "ç›®æ ‡è·¯å¾„: " << cfg.target_path[i] << std::endl;
+
+        if (copy_and_delete(cfg.source_path[i], cfg.target_path[i])) {
+            std::string command = "mklink /j \"" + cfg.source_path[i] + "\" \"" + cfg.target_path[i] + "\"";
+            system(command.c_str());
+        } else {
+            std::cerr << "æ–‡ä»¶å¤åˆ¶æˆ–åˆ é™¤å¤±è´¥ï¼Œè·³è¿‡åˆ›å»ºé“¾æ¥" << std::endl;
+        }
+    }
+    std::cout << "================================" << std::endl;
+
+    return 0;
+}
+
+
+//int mklink_start()
+//{
+//	sub_mklink mklink;
+//	sub_mklink::config cfg = mklink.read_config();
+//	if (!cfg.success)
+//	{
+//		return -1;
+//	}
+//
+//	for (int i = 0; i < cfg.source_path.size(); ++i)
+//	{
+//		//std::cout << cfg.source_path.size();
+//		std::cout << "================================" << std::endl;
+//		std::cout << "æºè·¯å¾„: " << cfg.source_path[i] << std::endl;
+//		std::cout << "ç›®æ ‡è·¯å¾„: " << cfg.target_path[i] << std::endl;
+//		std::string command = "mklink /j \"" + cfg.target_path[i] + "\" \"" + cfg.source_path[i] + "\"";
+//		system(command.c_str());
+//	}
+//	std::cout << "================================" << std::endl;
+//
+//	return 0;
+//
+//}
