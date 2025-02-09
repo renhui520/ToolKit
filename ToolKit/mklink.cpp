@@ -1,14 +1,30 @@
 #include "mklink.h"
 
+/*
+
+
+TODO: 1. 文件复制到新位置，并删除旧文件，然后创建连接
+	  2. 美化界面，增加提示信息
+
+
+*/
+
+
+
+
 sub_mklink::sub_mklink()
 {
+	printf("====================================\n");
 	printf("mklink子模块已启动\n");
-	printf("mklink子模块 暂且不支持中文路径，所以请勿添加任何中文路径，可能会导致报错\n");
-	printf("中文可以直接用于注释，但不可做路径\n");
+	printf("====================================\n\n");
+	printf("Tips: mklink子模块 暂且不支持中文路径，所以请勿添加任何中文路径，可能会导致报错\n");
+	printf("中文可以直接用于注释，但不可做路径\n\n");
 }
 sub_mklink::~sub_mklink()
 {
+	printf("\n====================================\n");
 	printf("mklink子模块已关闭\n");
+	printf("====================================\n");
 }
 
 sub_mklink::config& sub_mklink::read_config()
@@ -20,7 +36,25 @@ sub_mklink::config& sub_mklink::read_config()
 	std::string buffer_rconfig_source;
 	std::string buffer_rconfig_target;
 
-	rconfig(buffer_rconfig_un);
+	if (rconfig(buffer_rconfig_un))
+	{
+		cfg.success = false;
+
+		std::cout << "\nconfig配置文件 格式如下：" << std::endl;
+		std::cout << "文件名: config.cfg" << std::endl;
+		std::cout << "格式如下: 路径中请勿包含任何中文, 否则无法识别, 允许存在多行隔开 \n \
+如果没有路径, 请勿写路径头即source和target, 否则会报错!! \n\n \
+source: C:\\b_test \n \
+source: C:\\d_test \n \
+\n \
+\n \
+target: D:\\a_test \n \
+target: D:\\c_test \n \
+" << std::endl;
+
+
+		return cfg;
+	}
 
 	// 2. 提炼config_buffer的配置文件内容
 	for (auto& line : buffer_rconfig_un)
@@ -75,11 +109,13 @@ int mklink_start()
 	for (int i = 0; i < cfg.source_path.size(); ++i)
 	{
 		//std::cout << cfg.source_path.size();
+		std::cout << "================================" << std::endl;
 		std::cout << "源路径: " << cfg.source_path[i] << std::endl;
 		std::cout << "目标路径: " << cfg.target_path[i] << std::endl;
 		std::string command = "mklink /j \"" + cfg.target_path[i] + "\" \"" + cfg.source_path[i] + "\"";
 		system(command.c_str());
 	}
+	std::cout << "================================" << std::endl;
 
 	return 0;
 

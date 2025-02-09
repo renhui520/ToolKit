@@ -31,6 +31,7 @@ int main()
 {
 	while (true)
 	{
+		CLEAR();
 		int select;
 		Pr_LINE;
 		Pr_SELECT(1, "通讯录");
@@ -41,10 +42,14 @@ int main()
 		switch (select)
 		{
 		case 1:
+			CLEAR();
 			book_start();
+			PAUSE();
 			break;
 		case 2:
+			CLEAR();
 			mklink_start();
+			PAUSE();
 			break;
 		default:
 			break;
